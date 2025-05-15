@@ -1,25 +1,22 @@
-body {
-  background-color: #000000;
-  color: #00FF00;
-  font-family: 'Consolas', 'Monaco', 'Lucida Console', 'Courier New', monospace;
-  margin: 0;
-  padding: 20px;
-  font-size: 16px;
-  line-height: 1.6;
-}
+/* Remove body styles from here, as they are now in index.css */
 
 .app-container {
   max-width: 800px;
-  margin: 0 auto;
-  border: 1px solid #00FF00;
+  margin: 20px auto; /* Added top/bottom margin for body */
+  border: 1px solid var(--primary-color);
   padding: 20px;
-  box-shadow: 0 0 15px #00FF00;
+  box-shadow: 0 0 15px var(--primary-color);
+  display: flex;
+  flex-direction: column;
+  /* height: 100vh; This can cause issues with page scroll, let content define height */
+  max-height: calc(100vh - 40px); /* Consider viewport height minus margins */
+  background-color: var(--background-color-darker); /* Ensure app container has a bg */
 }
 
 header {
   text-align: center;
   margin-bottom: 20px;
-  border-bottom: 1px dashed #00FF00;
+  border-bottom: 1px dashed var(--primary-color);
   padding-bottom: 10px;
 }
 
@@ -28,13 +25,14 @@ header h1 {
   margin: 0;
   text-transform: uppercase;
   letter-spacing: 2px;
+  color: var(--primary-color);
 }
 
 .cursor {
   display: inline-block;
   width: 10px;
   height: 1.2em;
-  background-color: #00FF00;
+  background-color: var(--primary-color);
   animation: blink 1s step-end infinite;
   margin-left: 5px;
   vertical-align: text-bottom;
@@ -53,43 +51,45 @@ header h1 {
 .prompt {
   margin-right: 10px;
   font-weight: bold;
+  color: var(--primary-color);
 }
 
 .todo-input {
   flex-grow: 1;
-  background-color: #0D0D0D;
-  color: #00FF00;
-  border: 1px solid #00FF00;
-  padding: 10px;
+  background-color: var(--background-color);
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  padding: 12px; /* Increased padding */
   font-family: inherit;
   font-size: 1em;
-  caret-color: #00FF00;
+  caret-color: var(--primary-color);
 }
 
 .todo-input::placeholder {
-  color: #008000; /* Darker green for placeholder */
+  color: var(--secondary-color);
 }
 
 button {
-  background-color: #00FF00;
-  color: #000000;
-  border: none;
+  background-color: var(--primary-color);
+  color: var(--background-color-darker);
+  border: 1px solid var(--primary-color);
   padding: 10px 15px;
   font-family: inherit;
   font-weight: bold;
   cursor: pointer;
   text-transform: uppercase;
-  margin-left: 10px;
-  transition: background-color 0.2s, color 0.2s;
+  /* margin-left: 10px; Removed generic margin */
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
 }
 
 button:hover {
-  background-color: #008000; /* Darker green */
-  color: #FFFFFF;
+  background-color: var(--secondary-color);
+  color: var(--background-color-darker); /* Ensure contrast */
+  border-color: var(--accent-color);
 }
 
 .add-button {
-  /* Specific styles if needed */
+  margin-left: 10px; /* Specific margin for this button */
 }
 
 .filter-buttons {
@@ -101,18 +101,19 @@ button:hover {
 
 .filter-buttons button {
   background-color: transparent;
-  color: #00FF00;
-  border: 1px solid #00FF00;
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
 }
 
 .filter-buttons button.active {
-  background-color: #00FF00;
-  color: #000000;
+  background-color: var(--primary-color);
+  color: var(--background-color-darker);
 }
 
 .filter-buttons button:hover:not(.active) {
-  background-color: #004400;
-  color: #00FF00;
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
+  border-color: var(--accent-color);
 }
 
 .todo-list {
@@ -126,7 +127,7 @@ button:hover {
   justify-content: space-between;
   align-items: center;
   padding: 10px 0;
-  border-bottom: 1px dotted #005000; /* Dimmer dotted line */
+  border-bottom: 1px dotted var(--secondary-color);
 }
 
 .todo-item:last-child {
@@ -136,54 +137,56 @@ button:hover {
 .todo-text {
   cursor: pointer;
   flex-grow: 1;
+  color: var(--primary-color);
 }
 
 .todo-item.completed .todo-text {
   text-decoration: line-through;
-  color: #008000; /* Darker green for completed */
+  color: var(--secondary-color);
 }
 
 .delete-button {
   background-color: transparent;
-  color: #FF0000; /* Red for delete */
-  border: 1px solid #FF0000;
+  color: var(--danger-color);
+  border: 1px solid var(--danger-color);
   padding: 5px 10px;
+  margin-left: 10px;
 }
 
 .delete-button:hover {
-  background-color: #FF0000;
-  color: #000000;
+  background-color: var(--danger-color);
+  color: var(--background-color-darker);
+  border-color: var(--danger-color);
 }
 
 .clear-completed-button {
   margin-top: 20px;
-  background-color: #FF8C00; /* Orange for clear completed */
-  color: #000000;
-  border: none;
+  background-color: var(--accent-color);
+  color: var(--background-color-darker);
+  border: 1px solid var(--accent-color);
 }
 
 .clear-completed-button:hover {
-  background-color: #CC7000; /* Darker orange */
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: var(--background-color-darker);
 }
 
 footer {
   margin-top: 30px;
   padding-top: 10px;
-  border-top: 1px dashed #00FF00;
+  border-top: 1px dashed var(--primary-color);
   text-align: center;
   font-size: 0.9em;
-  color: #00A000; /* Slightly dimmer green */
+  color: var(--secondary-color);
 }
 
-/* Mobile Responsiveness */
+/* Mobile Responsiveness - update to use vars */
 @media (max-width: 600px) {
-  body {
-    padding: 10px;
-    font-size: 14px;
-  }
-
   .app-container {
+    margin: 10px auto;
     padding: 15px;
+    max-height: calc(100vh - 20px);
   }
 
   header h1 {
@@ -200,14 +203,17 @@ footer {
   }
 
   .prompt {
-    display: none; /* Hide prompt on small screens for more space */
+    display: none;
   }
 
   button,
-  .add-button {
+  .add-button { /* Ensure add-button also has full width if it's a general button */
     width: 100%;
     margin-left: 0;
-    margin-top: 5px; /* Spacing for buttons in column */
+    margin-top: 5px;
+  }
+  .add-button {
+     margin-top: 10px; /* Add specific margin for stack */
   }
 
   .filter-buttons {
@@ -229,5 +235,265 @@ footer {
   .delete-button {
     align-self: flex-end;
     padding: 3px 8px;
+    margin-left: 0; /* Reset margin */
   }
+}
+
+/* Stakeholder Styles - ensure vars are used */
+.stakeholders-section {
+  padding: 10px 0;
+  margin-bottom: 15px;
+  border-bottom: 2px dashed var(--primary-color);
+}
+
+.stakeholders-list {
+  display: flex;
+  overflow-x: auto;
+  padding: 10px 5px; /* Add some padding for scrollbar */
+  align-items: center;
+  gap: 15px;
+}
+
+.stakeholder-avatar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start; /* Align avatar content to top, name will be below */
+  width: 70px;
+  height: auto; /* Allow height to adjust for name */
+  min-height: 70px; /* Minimum height for the circular part */
+  border: 2px solid var(--secondary-color);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out, border-color 0.2s, box-shadow 0.2s;
+  background-color: var(--background-color);
+  text-align: center;
+  flex-shrink: 0;
+  overflow: hidden; /* Crucial for maintaining circular shape of content */
+  position: relative; /* For potential future absolute positioning of elements inside */
+}
+
+/* This container is for the visual circular part only */
+.avatar-display-container {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    overflow: hidden; /* Clip image/initials to circle */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--background-color); /* Fallback bg */
+}
+
+.stakeholder-avatar:hover {
+  border-color: var(--accent-color);
+  transform: scale(1.05); /* Slightly less aggressive hover scale */
+}
+
+.stakeholder-avatar.selected {
+  border-color: var(--accent-color);
+  transform: scale(1.1);
+  box-shadow: 0 0 10px var(--accent-color);
+}
+
+.avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures image covers the area, maintaining aspect ratio */
+}
+
+.avatar-initials {
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--primary-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.stakeholder-name {
+  font-size: 0.75em; /* Slightly larger name */
+  margin-top: 6px;
+  color: var(--primary-color);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 70px; /* Match avatar width */
+  padding: 0 2px; /* Small padding if name is too close to edges */
+  /* This element is outside the avatar-display-container, but inside stakeholder-avatar flex */
+}
+
+.add-stakeholder-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 70px;
+  height: 70px;
+  border: 2px dashed var(--secondary-color);
+  border-radius: 50%;
+  font-size: 30px;
+  color: var(--secondary-color);
+  background-color: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  flex-shrink: 0;
+}
+
+.add-stakeholder-button:hover {
+  color: var(--accent-color);
+  border-color: var(--accent-color);
+  transform: scale(1.1);
+}
+
+.info-text {
+  color: var(--secondary-color); /* Dimmer for info text */
+  text-align: center;
+  margin-top: 20px;
+  font-style: italic;
+}
+
+main {
+  overflow-y: auto;
+  flex-grow: 1;
+}
+
+main > div:not(.info-text) { 
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.stakeholders-list-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px 0;
+  margin-bottom: 10px;
+}
+
+.selected-stakeholder-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 8px 12px; /* More padding */
+  background-color: var(--background-color);
+  border: 1px solid var(--secondary-color);
+  border-radius: 4px;
+}
+
+.selected-stakeholder-info h2 {
+  font-size: 1.1em;
+  color: var(--accent-color);
+  margin: 0;
+}
+
+.edit-stakeholder-button {
+  padding: 6px 10px;
+  font-size: 0.9em;
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
+  border: 1px solid var(--secondary-color);
+}
+
+.edit-stakeholder-button:hover {
+  background-color: var(--accent-color);
+  color: var(--background-color-darker);
+  border-color: var(--accent-color);
+}
+
+.stakeholder-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* Increased gap */
+  padding: 20px; /* Increased padding */
+  margin-top: 15px;
+  border: 1px solid var(--secondary-color);
+  background-color: var(--background-color);
+  max-width: 450px; /* Slightly wider */
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 4px; /* Rounded corners for form */
+}
+
+.stakeholder-form h3 {
+  color: var(--accent-color);
+  margin-top: 0;
+  margin-bottom: 10px;
+  text-align: center;
+  font-size: 1.3em;
+}
+
+.stakeholder-form label {
+  font-size: 0.9em;
+  color: var(--primary-color);
+  margin-bottom: -5px;
+}
+
+.stakeholder-form input[type=\"text\"],
+.stakeholder-form input[type=\"file\"] {
+  background-color: var(--background-color-darker);
+  border: 1px solid var(--secondary-color);
+  color: var(--primary-color);
+  padding: 12px; /* Increased padding */
+  font-family: inherit;
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 1em;
+  border-radius: 3px;
+}
+
+.stakeholder-form input[type=\"file\"] {
+  padding: 8px; /* File input padding behaves differently */
+}
+
+.stakeholder-form input[type=\"text\"]::placeholder {
+  color: var(--secondary-color);
+}
+
+.stakeholder-form button {
+  padding: 12px 18px; /* More padding */
+  background-color: var(--primary-color);
+  color: var(--background-color-darker);
+  border: 1px solid var(--primary-color);
+  margin-top: 8px;
+  font-size: 1em;
+}
+
+.stakeholder-form button:hover {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+  color: var(--background-color-darker);
+}
+
+.stakeholder-form button[type=\"button\"] { /* Cancel button */
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
+  border-color: var(--secondary-color);
+}
+
+.stakeholder-form button[type=\"button\"]:hover {
+  background-color: var(--danger-color);
+  border-color: var(--danger-color);
+  color: var(--background-color-darker);
+}
+
+.add-stakeholder-form {
+  /* Inherits from .stakeholder-form */
+}
+
+.edit-stakeholder-form {
+  /* Inherits from .stakeholder-form */
+}
+
+/* Styles for image preview in form */
+.image-preview {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 10px auto;
+  border: 1px solid var(--secondary-color);
+  background-color: var(--background-color-darker);
 }

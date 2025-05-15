@@ -1,2 +1,42 @@
 /* All global styles are primarily handled by App.css through body styling. */
 /* This file can be used for very minimal global resets if necessary. */
+
+:root {
+  --primary-color: #00FF00;     /* Bright Green (main text, active elements) */
+  --secondary-color: #008000;   /* Dark Green (borders, placeholders, inactive text) */
+  --accent-color: #FFA500;      /* Orange/Amber (highlights, special buttons) */
+  --background-color: #0D0D0D;  /* Very Dark Gray (main background for elements) */
+  --background-color-darker: #000000; /* Pure Black (global page background, form backgrounds) */
+  --font-family-monospace: 'Consolas', 'Monaco', 'Lucida Console', 'Courier New', monospace;
+  --danger-color: #FF0000; /* Red for delete/error actions */
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-family-monospace);
+  background-color: var(--background-color-darker);
+  color: var(--primary-color);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 16px; /* Base font size */
+  line-height: 1.6; /* Base line height */
+}
+
+/* Basic scrollbar styling for webkit browsers to match the theme */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background-color-darker);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--secondary-color);
+  border: 1px solid var(--primary-color);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-color);
+}
