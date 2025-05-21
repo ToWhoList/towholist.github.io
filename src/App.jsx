@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { List, CheckCircle, Circle } from 'lucide-react'
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 import './App.css'
@@ -284,22 +285,7 @@ function App() {
   return (
     <div className="app-container">
       <header>
-        <h1>Retro-Terminal ToWhoList</h1>
-        <div className="cursor">_</div>
-      </header>
-
-      <div className="stakeholders-section">
-        <div className="stakeholders-list-header">
-          {selectedStakeholderId && stakeholders.find(sh => sh.id === selectedStakeholderId) && (
-            <div className="selected-stakeholder-info">
-              <h2>Tasks for: {stakeholders.find(sh => sh.id === selectedStakeholderId).name}</h2>
-              <button onClick={() => handleOpenEditStakeholder(stakeholders.find(sh => sh.id === selectedStakeholderId))} className="edit-stakeholder-button">
-                Edit Details
-              </button>
-            </div>
-          )}
-        </div>
-        <div className="stakeholders-list">
+      <div className="stakeholders-list">
           {stakeholders.map(sh => (
             <div 
               key={sh.id} 
@@ -311,6 +297,9 @@ function App() {
                 {getAvatarDisplay(sh)}
               </div>
               <p className="stakeholder-name">{sh.name}</p>
+              <button onClick={() => handleOpenEditStakeholder(stakeholders.find(sh => sh.id === selectedStakeholderId))} className="edit-stakeholder-button">
+                Edit Details
+              </button>
             </div>
           ))}
           <button 
@@ -321,6 +310,34 @@ function App() {
             +
           </button>
         </div>
+      </header>
+      <div className="stakeholders-section">
+      {selectedStakeholderId ? 
+          <form onSubmit={handleAddTodo} className="todo-form">
+            <span className="prompt">&gt;</span>
+            <input
+              type="text"
+              value={newTodo}
+              onChange={(e) => setNewTodo(e.target.value)}
+              placeholder="Add a new task..."
+              className="todo-input"
+            />
+            <button type="submit" className="add-button">ADD</button>
+          </form>
+          : (
+        <p className="info-text">Please select or add a stakeholder to see their tasks.</p>
+      )} 
+        {/* <div className="stakeholders-list-header">
+          {selectedStakeholderId && stakeholders.find(sh => sh.id === selectedStakeholderId) && (
+            <div className="selected-stakeholder-info">
+              <h2>Tasks for: {stakeholders.find(sh => sh.id === selectedStakeholderId).name}</h2>
+              <button onClick={() => handleOpenEditStakeholder(stakeholders.find(sh => sh.id === selectedStakeholderId))} className="edit-stakeholder-button">
+                Edit Details
+              </button>
+            </div>
+          )}
+        </div> */}
+
 
         {isAddingStakeholder && !isEditingStakeholder && (
           <form onSubmit={handleAddStakeholder} className="add-stakeholder-form stakeholder-form">
@@ -392,11 +409,33 @@ function App() {
           </form>
         )}
       </div>
-
+      <div className="filter-buttons">
+            <button 
+              onClick={() => setFilter('all')} 
+              className={`filter-button ${filter === 'all' ? 'active' : ''}`}
+              title="All Tasks"
+            >
+              <List size={20} />
+            </button>
+            <button 
+              onClick={() => setFilter('active')} 
+              className={`filter-button ${filter === 'active' ? 'active' : ''}`} 
+              title="Active Tasks"
+            >
+              <Circle size={20} />
+            </button>
+            <button 
+              onClick={() => setFilter('completed')} 
+              className={`filter-button ${filter === 'completed' ? 'active' : ''}`} 
+              title="Completed Tasks"
+            >
+              <CheckCircle size={20} />
+            </button>
+          </div>
       <main>
       {selectedStakeholderId ? (
         <>
-          <form onSubmit={handleAddTodo} className="todo-form">
+          {/* <form onSubmit={handleAddTodo} className="todo-form">
             <span className="prompt">&gt;</span>
             <input
               type="text"
@@ -406,13 +445,8 @@ function App() {
               className="todo-input"
             />
             <button type="submit" className="add-button">ADD</button>
-          </form>
+          </form> */}
 
-          <div className="filter-buttons">
-            <button onClick={() => setFilter('all')} className={filter === 'all' ? 'active' : ''}>All Tasks</button>
-            <button onClick={() => setFilter('active')} className={filter === 'active' ? 'active' : ''}>Active</button>
-            <button onClick={() => setFilter('completed')} className={filter === 'completed' ? 'active' : ''}>Completed</button>
-          </div>
 
           <ul className="todo-list">
             {filteredTodos.map((todo) => (
@@ -435,7 +469,10 @@ function App() {
       )}
       </main>
       <footer>
-        <p>SYSTEM READY. {selectedStakeholderId ? filteredTodos.length : 0} task(s) displayed. {selectedStakeholderId ? currentTodos.filter(t => !t.completed).length : 0} active.</p>
+      <h1>ToWhoList 
+          {/* <div className="cursor">_</div> */}
+          </h1>
+        {/* <p>SYSTEM READY. {selectedStakeholderId ? filteredTodos.length : 0} task(s) displayed. {selectedStakeholderId ? currentTodos.filter(t => !t.completed).length : 0} active.</p> */}
       </footer>
     </div>
   )

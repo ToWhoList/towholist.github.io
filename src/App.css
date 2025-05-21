@@ -93,27 +93,49 @@ button:hover {
 }
 
 .filter-buttons {
-  margin-bottom: 20px;
   display: flex;
-  gap: 10px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 16px 0;
   justify-content: center;
+  align-items: center;
 }
 
-.filter-buttons button {
-  background-color: transparent;
-  color: var(--primary-color);
+.filter-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
   border: 1px solid var(--primary-color);
+  border-radius: 4px;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 40px;
+  height: 40px;
 }
 
-.filter-buttons button.active {
-  background-color: var(--primary-color);
+.filter-button:hover {
+  background: var(--secondary-color);
+  border-color: var(--accent-color);
+}
+
+.filter-button.active {
+  background: var(--primary-color);
+  border-color: var(--accent-color);
+}
+
+.filter-button svg {
+  color: var(--primary-color);
+}
+
+.filter-button.active svg {
   color: var(--background-color-darker);
 }
 
-.filter-buttons button:hover:not(.active) {
-  background-color: var(--secondary-color);
-  color: var(--primary-color);
-  border-color: var(--accent-color);
+.filter-button:hover svg {
+  color: var(--background-color-darker);
 }
 
 .todo-list {
@@ -217,10 +239,13 @@ footer {
   }
 
   .filter-buttons {
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: center;
+    gap: 8px;
   }
-  .filter-buttons button {
-    width: 100%;
+  .filter-button {
+    width: auto;
+    margin: 0;
   }
 
   .todo-item {
@@ -497,3 +522,4 @@ main > div:not(.info-text) {
   border: 1px solid var(--secondary-color);
   background-color: var(--background-color-darker);
 }
+
