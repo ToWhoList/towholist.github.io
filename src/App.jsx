@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { List, CheckCircle, Circle } from 'lucide-react'
+import { List, CheckCircle, Circle, Edit } from 'lucide-react'
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 import './App.css'
@@ -297,9 +297,11 @@ function App() {
                 {getAvatarDisplay(sh)}
               </div>
               <p className="stakeholder-name">{sh.name}</p>
-              <button onClick={() => handleOpenEditStakeholder(stakeholders.find(sh => sh.id === selectedStakeholderId))} className="edit-stakeholder-button">
-                Edit Details
-              </button>
+              {/* <button onClick={() => handleOpenEditStakeholder(stakeholders.find(sh => sh.id === selectedStakeholderId))}  */}
+              {/* // className="edit-stakeholder-button" */}
+              {/* > */}
+               <Edit onClick={() => handleOpenEditStakeholder(stakeholders.find(sh => sh.id === selectedStakeholderId))} size={20} />
+              {/* </button> */}
             </div>
           ))}
           <button 

@@ -9,7 +9,7 @@
   display: flex;
   flex-direction: column;
   /* height: 100vh; This can cause issues with page scroll, let content define height */
-  max-height: calc(100vh - 40px); /* Consider viewport height minus margins */
+  /* max-height: calc(100vh - 40px); Consider viewport height minus margins */
   background-color: var(--background-color-darker); /* Ensure app container has a bg */
 }
 
