@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { List, CheckCircle, Circle, Edit } from 'lucide-react'
+import { List, CheckCircle, Circle, Edit, Trash } from 'lucide-react'
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 import './App.css'
@@ -300,7 +300,11 @@ function App() {
               {/* <button onClick={() => handleOpenEditStakeholder(stakeholders.find(sh => sh.id === selectedStakeholderId))}  */}
               {/* // className="edit-stakeholder-button" */}
               {/* > */}
-               <Edit onClick={() => handleOpenEditStakeholder(stakeholders.find(sh => sh.id === selectedStakeholderId))} size={20} />
+              {
+                selectedStakeholderId === sh.id && (
+                  <Edit onClick={() => handleOpenEditStakeholder(stakeholders.find(sh => sh.id === selectedStakeholderId))} size={20} />
+                )
+              }
               {/* </button> */}
             </div>
           ))}
@@ -324,10 +328,11 @@ function App() {
               placeholder="Add a new task..."
               className="todo-input"
             />
-            <button type="submit" className="add-button">ADD</button>
+            
+            <button type="submit" className="add-button">+</button>
           </form>
           : (
-        <p className="info-text">Please select or add a stakeholder to see their tasks.</p>
+        <p className="info-text">Please select or add a person to see their tasks.</p>
       )} 
         {/* <div className="stakeholders-list-header">
           {selectedStakeholderId && stakeholders.find(sh => sh.id === selectedStakeholderId) && (
@@ -343,12 +348,12 @@ function App() {
 
         {isAddingStakeholder && !isEditingStakeholder && (
           <form onSubmit={handleAddStakeholder} className="add-stakeholder-form stakeholder-form">
-            <h3>Add New Stakeholder</h3>
+            <h3>Add New Person</h3>
             <input 
               type="text" 
               value={newStakeholderName} 
               onChange={(e) => setNewStakeholderName(e.target.value)} 
-              placeholder="Stakeholder Name (e.g., Mom, Bank)"
+              placeholder="Person Name (e.g., Mom, Bank)"
               required 
             />
             {newStakeholderImage && <img src={newStakeholderImage} alt="Preview" className="image-preview"/>}
@@ -370,7 +375,7 @@ function App() {
               accept="image/*"
               onChange={(e) => handleImageFileChange(e, setNewStakeholderImage, setNewStakeholderImageUrlInput)}
             />
-            <button type="submit">Add Stakeholder</button>
+            <button type="submit">Add Person</button>
             <button type="button" onClick={() => setIsAddingStakeholder(false)}>Cancel</button>
           </form>
         )}
@@ -384,7 +389,7 @@ function App() {
               id="editName"
               value={editStakeholderName} 
               onChange={(e) => setEditStakeholderName(e.target.value)} 
-              placeholder="Stakeholder Name"
+              placeholder="Person Name"
               required 
             />
             {editStakeholderImage && <img src={editStakeholderImage} alt="Preview" className="image-preview"/>}
@@ -456,7 +461,7 @@ function App() {
                 <span onClick={() => toggleTodo(todo.id)} className="todo-text">
                   [{todo.completed ? 'x' : ' '}] {todo.text}
                 </span>
-                <button onClick={() => deleteTodo(todo.id)} className="delete-button">DEL</button>
+                <Trash size={20} onClick={() => deleteTodo(todo.id)} className="delete-button" />
               </li>
             ))}
           </ul>
@@ -471,9 +476,9 @@ function App() {
       )}
       </main>
       <footer>
-      <h1>ToWhoList 
+      <h2>ToWhoList 
           {/* <div className="cursor">_</div> */}
-          </h1>
+          </h2>
         {/* <p>SYSTEM READY. {selectedStakeholderId ? filteredTodos.length : 0} task(s) displayed. {selectedStakeholderId ? currentTodos.filter(t => !t.completed).length : 0} active.</p> */}
       </footer>
     </div>
