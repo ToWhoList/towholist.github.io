@@ -44,6 +44,7 @@ header h1 {
 
 .todo-form {
   display: flex;
+  flex-direction: row;
   align-items: center;
   margin-bottom: 20px;
 }
@@ -160,6 +161,7 @@ button:hover {
   cursor: pointer;
   flex-grow: 1;
   color: var(--primary-color);
+  margin-bottom: 0; /* No longer needed as items are in a row */
 }
 
 .todo-item.completed .todo-text {
@@ -216,12 +218,12 @@ footer {
   }
 
   .todo-form {
-    flex-direction: column;
-    align-items: stretch;
+    flex-direction: row;
+    align-items: center;
   }
 
   .todo-input {
-    margin-bottom: 10px;
+    margin-bottom: 0; /* Input and button are now on the same line */
   }
 
   .prompt {
@@ -229,13 +231,10 @@ footer {
   }
 
   button,
-  .add-button { /* Ensure add-button also has full width if it's a general button */
-    width: 100%;
-    margin-left: 0;
-    margin-top: 5px;
-  }
-  .add-button {
-     margin-top: 10px; /* Add specific margin for stack */
+  .add-button { 
+    width: auto; 
+    margin-left: 10px; 
+    margin-top: 0; 
   }
 
   .filter-buttons {
@@ -249,18 +248,18 @@ footer {
   }
 
   .todo-item {
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: row;
+    align-items: center;
   }
 
   .todo-text {
-    margin-bottom: 5px;
+    margin-bottom: 0; /* No longer needed as items are in a row */
   }
 
   .delete-button {
-    align-self: flex-end;
-    padding: 3px 8px;
-    margin-left: 0; /* Reset margin */
+    align-self: auto; /* Reset alignment */
+    padding: 5px 10px; /* Keep original padding or adjust as needed */
+    margin-left: 10px; /* Restore left margin for spacing */
   }
 }
 
@@ -428,6 +427,30 @@ main > div:not(.info-text) {
   border-color: var(--accent-color);
 }
 
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent backdrop */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure it's on top */
+  padding: 20px; /* Add some padding for smaller screens so form doesn't touch edges */
+  box-sizing: border-box;
+}
+
+/* Adjust stakeholder form when it's in a modal context */
+.modal-overlay .stakeholder-form {
+  margin-top: 0; /* Remove top margin as it's centered by overlay */
+  z-index: 1001; /* Ensure form is above backdrop */
+  /* max-width will still apply from existing .stakeholder-form rules */
+  /* background-color, padding, border, etc. from .stakeholder-form still apply */
+}
+
 .stakeholder-form {
   display: flex;
   flex-direction: column;
@@ -458,15 +481,16 @@ main > div:not(.info-text) {
 
 .stakeholder-form input[type=\"text\"],
 .stakeholder-form input[type=\"file\"] {
-  background-color: var(--background-color-darker);
-  border: 1px solid var(--secondary-color);
+  background-color: var(--background-color); /* Match .todo-input */
+  border: 1px solid var(--primary-color); /* Match .todo-input */
   color: var(--primary-color);
-  padding: 12px; /* Increased padding */
+  padding: 12px; 
   font-family: inherit;
   width: 100%;
   box-sizing: border-box;
   font-size: 1em;
   border-radius: 3px;
+  caret-color: var(--primary-color); /* Match .todo-input */
 }
 
 .stakeholder-form input[type=\"file\"] {

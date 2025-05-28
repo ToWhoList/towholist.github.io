@@ -347,37 +347,43 @@ function App() {
 
 
         {isAddingStakeholder && !isEditingStakeholder && (
-          <form onSubmit={handleAddStakeholder} className="add-stakeholder-form stakeholder-form">
-            <h3>Add New Person</h3>
-            <input 
-              type="text" 
-              value={newStakeholderName} 
-              onChange={(e) => setNewStakeholderName(e.target.value)} 
-              placeholder="Person Name (e.g., Mom, Bank)"
-              required 
-            />
-            {newStakeholderImage && <img src={newStakeholderImage} alt="Preview" className="image-preview"/>}
-            <label htmlFor="newStakeholderImageUrlField">Avatar Image URL (optional):</label>
-            <input 
-              type="text" 
-              id="newStakeholderImageUrlField"
-              value={newStakeholderImageUrlInput} 
-              onChange={(e) => {
-                setNewStakeholderImageUrlInput(e.target.value);
-                setNewStakeholderImage(e.target.value); // Update main image state if URL is typed
-              }} 
-              placeholder="Paste image URL or upload file"
-            />
-            <label htmlFor="newStakeholderImageFile">Or Upload Image:</label>
-            <input 
-              type="file" 
-              id="newStakeholderImageFile"
-              accept="image/*"
-              onChange={(e) => handleImageFileChange(e, setNewStakeholderImage, setNewStakeholderImageUrlInput)}
-            />
-            <button type="submit">Add Person</button>
-            <button type="button" onClick={() => setIsAddingStakeholder(false)}>Cancel</button>
-          </form>
+          <div className="modal-overlay" onClick={() => setIsAddingStakeholder(false)}>
+            <form 
+              onSubmit={handleAddStakeholder} 
+              className="add-stakeholder-form stakeholder-form"
+              onClick={(e) => e.stopPropagation()} // Prevent click on form from closing modal
+            >
+              <h3>Add New Person</h3>
+              <input 
+                type="text" 
+                value={newStakeholderName} 
+                onChange={(e) => setNewStakeholderName(e.target.value)} 
+                placeholder="Person Name (e.g., Mom, Bank)"
+                required 
+              />
+              {newStakeholderImage && <img src={newStakeholderImage} alt="Preview" className="image-preview"/>}
+              <label htmlFor="newStakeholderImageUrlField">Avatar Image URL (optional):</label>
+              <input 
+                type="text" 
+                id="newStakeholderImageUrlField"
+                value={newStakeholderImageUrlInput} 
+                onChange={(e) => {
+                  setNewStakeholderImageUrlInput(e.target.value);
+                  setNewStakeholderImage(e.target.value); // Update main image state if URL is typed
+                }} 
+                placeholder="Paste image URL or upload file"
+              />
+              <label htmlFor="newStakeholderImageFile">Or Upload Image:</label>
+              <input 
+                type="file" 
+                id="newStakeholderImageFile"
+                accept="image/*"
+                onChange={(e) => handleImageFileChange(e, setNewStakeholderImage, setNewStakeholderImageUrlInput)}
+              />
+              <button type="submit">Add Person</button>
+              <button type="button" onClick={() => setIsAddingStakeholder(false)}>Cancel</button>
+            </form>
+          </div>
         )}
 
         {isEditingStakeholder && stakeholderToEdit && (
