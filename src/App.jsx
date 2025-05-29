@@ -1,8 +1,57 @@
 import { useState, useEffect } from 'react'
-import { List, CheckCircle, Circle, Edit, Trash } from 'lucide-react'
+import { List, CheckCircle, Circle, Edit, Trash, GripVertical, Save, XCircle, ArrowUpDown } from 'lucide-react'
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 import './App.css'
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+
+// New SortableItem component
+function SortableItem(props) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: props.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.7 : 1, // Standard opacity for dragging
+    zIndex: isDragging ? 100 : 'auto',
+    // The class `dragging` will be added to .todo-item for CSS styles
+  };
+
+  return (
+    <li 
+      ref={setNodeRef} 
+      style={style} 
+      {...attributes} // Spread attributes for sortable
+      // Add className for base styling and dragging state
+      className={`todo-item ${props.completed ? 'completed' : ''} ${isDragging ? 'dragging' : ''}`}
+    >
+      {/* Pass down children function, which expects drag listeners */}
+      {props.children(listeners)}
+    </li>
+  );
+}
 
 function App() {
   const [stakeholders, setStakeholders] = useState([]);
@@ -12,6 +61,7 @@ function App() {
   const [filter, setFilter] = useState('all'); // 'all', 'active', 'completed'
 
   const [isLoading, setIsLoading] = useState(true); // New loading state
+  const [isReordering, setIsReordering] = useState(false); // New state for reorder mode
 
   // State for adding stakeholder
   const [isAddingStakeholder, setIsAddingStakeholder] = useState(false);
@@ -25,6 +75,14 @@ function App() {
   const [editStakeholderName, setEditStakeholderName] = useState('');
   const [editStakeholderImage, setEditStakeholderImage] = useState(''); // Holds the final URL or Data URL
   const [editStakeholderImageUrlInput, setEditStakeholderImageUrlInput] = useState(''); // For the URL text input field
+
+  // Sensors for @dnd-kit
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
 
   // Load data from localStorage (Revised Logic)
   useEffect(() => {
@@ -166,6 +224,31 @@ function App() {
     }
   };
 
+  // REVISED handleDragEnd for @dnd-kit
+  function handleDragEnd(event) {
+    const {active, over} = event;
+
+    if (active.id !== over.id && selectedStakeholderId && over) { // Ensure over is not null
+      const currentStakeholderTodos = todos[selectedStakeholderId] || [];
+      setTodos((prevTodos) => {
+        const oldIndex = currentStakeholderTodos.findIndex(item => item.id === active.id);
+        const newIndex = currentStakeholderTodos.findIndex(item => item.id === over.id);
+        
+        if (oldIndex === -1 || newIndex === -1) {
+          console.warn('Draggable item not found in current todos array');
+          return prevTodos; 
+        }
+
+        const reorderedTodos = arrayMove(currentStakeholderTodos, oldIndex, newIndex);
+
+        return {
+          ...prevTodos,
+          [selectedStakeholderId]: reorderedTodos,
+        };
+      });
+    }
+  }
+
   const handleAddTodo = (e) => {
     e.preventDefault();
     if (newTodo.trim() === '' || !selectedStakeholderId) return;
@@ -280,6 +363,22 @@ function App() {
       .join('')
       .toUpperCase();
     return <div className="avatar-initials">{initials}</div>;
+  };
+
+  const handleToggleReorder = () => {
+    setIsReordering(!isReordering);
+  };
+
+  const handleSaveReorder = () => {
+    // Todos are already updated by handleDragEnd
+    setIsReordering(false);
+  };
+
+  const handleCancelReorder = () => {
+    // Optionally, you could revert to the original order if you stored it temporarily
+    // For now, just exit reorder mode
+    setIsReordering(false);
+    // If you want to revert, you'd need to load the todos from localStorage again or keep a temporary copy.
   };
 
   return (
@@ -422,29 +521,48 @@ function App() {
           </form>
         )}
       </div>
-      <div className="filter-buttons">
-            <button 
-              onClick={() => setFilter('all')} 
-              className={`filter-button ${filter === 'all' ? 'active' : ''}`}
-              title="All Tasks"
-            >
-              <List size={20} />
+      <div className="actions-toolbar">
+        <div className="filter-buttons">
+          <button
+            onClick={() => setFilter('all')}
+            className={`filter-button ${filter === 'all' ? 'active' : ''}`}
+            title="All Tasks"
+          >
+            <List size={20} />
+          </button>
+          <button
+            onClick={() => setFilter('active')}
+            className={`filter-button ${filter === 'active' ? 'active' : ''}`}
+            title="Active Tasks"
+          >
+            <Circle size={20} />
+          </button>
+          <button
+            onClick={() => setFilter('completed')}
+            className={`filter-button ${filter === 'completed' ? 'active' : ''}`}
+            title="Completed Tasks"
+          >
+            <CheckCircle size={20} />
+          </button>
+        </div>
+        <div className="reorder-controls">
+          {selectedStakeholderId && !isReordering && (
+            <button onClick={handleToggleReorder} className="reorder-button" title="Reorder Tasks">
+              <ArrowUpDown size={20} />
             </button>
-            <button 
-              onClick={() => setFilter('active')} 
-              className={`filter-button ${filter === 'active' ? 'active' : ''}`} 
-              title="Active Tasks"
-            >
-              <Circle size={20} />
-            </button>
-            <button 
-              onClick={() => setFilter('completed')} 
-              className={`filter-button ${filter === 'completed' ? 'active' : ''}`} 
-              title="Completed Tasks"
-            >
-              <CheckCircle size={20} />
-            </button>
-          </div>
+          )}
+          {selectedStakeholderId && isReordering && (
+            <>
+              <button onClick={handleSaveReorder} className="save-reorder-button" title="Save Order">
+                <Save size={20} />
+              </button>
+              <button onClick={handleCancelReorder} className="cancel-reorder-button" title="Cancel Reorder">
+                <XCircle size={20} />
+              </button>
+            </>
+          )}
+        </div>
+      </div>
       <main>
       {selectedStakeholderId ? (
         <>
@@ -462,23 +580,50 @@ function App() {
 
 
           <ul className="todo-list">
-            {filteredTodos.map((todo) => (
+            {isReordering ? (
+              <DndContext
+                sensors={sensors}
+                collisionDetection={closestCenter} // Or other collision detection strategies
+                onDragEnd={handleDragEnd}
+              >
+                <SortableContext
+                  items={filteredTodos.map(todo => todo.id)} // Pass array of IDs
+                  strategy={verticalListSortingStrategy}
+                >
+                  {filteredTodos.map((todo) => (
+                    <SortableItem key={todo.id} id={todo.id} completed={todo.completed}>
+                      {(dragListeners) => ( // Children as a function to receive drag listeners
+                        <>
+                          <GripVertical size={20} className="drag-handle" {...dragListeners} />
+                          <span onClick={() => toggleTodo(todo.id)} className="todo-text">
+                            [{todo.completed ? 'x' : ' '}] {todo.text}
+                          </span>
+                          {/* Trash icon is omitted here because parent logic hides it during reorder */}
+                        </>
+                      )}
+                    </SortableItem>
+                  ))}
+                </SortableContext>
+              </DndContext>
+            ) : (
+              filteredTodos.map((todo) => (
               <li key={todo.id} className={`todo-item ${todo.completed ? 'completed' : ''}`}>
                 <span onClick={() => toggleTodo(todo.id)} className="todo-text">
                   [{todo.completed ? 'x' : ' '}] {todo.text}
                 </span>
                 <Trash size={20} onClick={() => deleteTodo(todo.id)} className="delete-button" />
               </li>
-            ))}
+              ))
+            )}
           </ul>
-          {currentTodos.some(todo => todo.completed) && (
+          {currentTodos.some(todo => todo.completed) && !isReordering && (
             <button onClick={clearCompleted} className="clear-completed-button">
               Clear Completed Tasks
             </button>
           )}
         </>
       ) : (
-        <p className="info-text">Please select or add a stakeholder to see their tasks.</p>
+        <p className="info-text">Please select or add a person to see the tasks concerning them.</p>
       )}
       </main>
       <footer>

@@ -57,40 +57,32 @@ header h1 {
 
 .todo-input {
   flex-grow: 1;
-  background-color: var(--background-color);
-  color: var(--primary-color);
-  border: 1px solid var(--primary-color);
-  padding: 12px; /* Increased padding */
-  font-family: inherit;
-  font-size: 1em;
-  caret-color: var(--primary-color);
+  padding: 10px 15px;
+  border: 1px solid #444; /* Darker border for input */
+  border-radius: 4px;
+  margin-right: 10px;
+  background-color: #2d2d2d; /* Dark input background */
+  color: #e0e0e0; /* Light text color */
+  font-size: 1rem;
 }
 
 .todo-input::placeholder {
-  color: var(--secondary-color);
-}
-
-button {
-  background-color: var(--primary-color);
-  color: var(--background-color-darker);
-  border: 1px solid var(--primary-color);
-  padding: 10px 15px;
-  font-family: inherit;
-  font-weight: bold;
-  cursor: pointer;
-  text-transform: uppercase;
-  /* margin-left: 10px; Removed generic margin */
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
-}
-
-button:hover {
-  background-color: var(--secondary-color);
-  color: var(--background-color-darker); /* Ensure contrast */
-  border-color: var(--accent-color);
+  color: #888; /* Lighter placeholder text */
 }
 
 .add-button {
-  margin-left: 10px; /* Specific margin for this button */
+  background-color: #007bff; /* Bootstrap primary blue */
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.add-button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
 }
 
 .filter-buttons {
@@ -479,8 +471,8 @@ main > div:not(.info-text) {
   margin-bottom: -5px;
 }
 
-.stakeholder-form input[type=\"text\"],
-.stakeholder-form input[type=\"file\"] {
+.stakeholder-form input[type="text"],
+.stakeholder-form input[type="file"] {
   background-color: var(--background-color); /* Match .todo-input */
   border: 1px solid var(--primary-color); /* Match .todo-input */
   color: var(--primary-color);
@@ -493,11 +485,12 @@ main > div:not(.info-text) {
   caret-color: var(--primary-color); /* Match .todo-input */
 }
 
-.stakeholder-form input[type=\"file\"] {
+.stakeholder-form input[type="file"] {
   padding: 8px; /* File input padding behaves differently */
+  margin-bottom: 15px;
 }
 
-.stakeholder-form input[type=\"text\"]::placeholder {
+.stakeholder-form input[type="text"]::placeholder {
   color: var(--secondary-color);
 }
 
@@ -516,13 +509,13 @@ main > div:not(.info-text) {
   color: var(--background-color-darker);
 }
 
-.stakeholder-form button[type=\"button\"] { /* Cancel button */
+.stakeholder-form button[type="button"] { /* Cancel button */
   background-color: var(--secondary-color);
   color: var(--primary-color);
   border-color: var(--secondary-color);
 }
 
-.stakeholder-form button[type=\"button\"]:hover {
+.stakeholder-form button[type="button"]:hover {
   background-color: var(--danger-color);
   border-color: var(--danger-color);
   color: var(--background-color-darker);
@@ -545,5 +538,81 @@ main > div:not(.info-text) {
   margin: 10px auto;
   border: 1px solid var(--secondary-color);
   background-color: var(--background-color-darker);
+}
+
+.reorder-controls {
+  display: flex;
+  gap: 10px; /* Spacing between buttons */
+  margin-bottom: 15px; /* Space below the controls */
+  margin-top: 10px; /* Space above the controls */
+  justify-content: flex-start; /* Align to the left */
+  padding-left: 20px; /* Align with todo list items if they have padding */
+}
+
+.reorder-button,
+.save-reorder-button,
+.cancel-reorder-button {
+  background-color: #6c757d; /* Bootstrap secondary grey */
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 5px; /* Space between icon and text */
+  transition: background-color 0.2s ease-in-out;
+}
+
+.reorder-button:hover,
+.save-reorder-button:hover,
+.cancel-reorder-button:hover {
+  background-color: #5a6268; /* Darker grey on hover */
+}
+
+.save-reorder-button {
+  background-color: #28a745; /* Bootstrap success green */
+}
+.save-reorder-button:hover {
+  background-color: #218838; /* Darker green on hover */
+}
+
+.cancel-reorder-button {
+  background-color: #dc3545; /* Bootstrap danger red */
+}
+.cancel-reorder-button:hover {
+  background-color: #c82333; /* Darker red on hover */
+}
+
+.drag-handle {
+  cursor: grab;
+  margin-right: 10px;
+  color: #ccc; /* Light color for the handle */
+}
+
+.todo-item.dragging {
+  opacity: 0.7;
+  background-color: #3a3a3a; /* Slightly different background when dragging */
+}
+
+/* Styles for the new actions toolbar */
+.actions-toolbar {
+  display: flex;
+  justify-content: space-between; /* Distributes space between filter and reorder controls */
+  align-items: center; /* Aligns items vertically */
+  padding: 10px 0; /* Add some padding for spacing */
+  margin-bottom: 10px; /* Space below the toolbar */
+}
+
+.filter-buttons,
+.reorder-controls {
+  display: flex; /* Makes buttons inside these divs align in a row */
+  gap: 5px; /* Adds a small gap between buttons */
+}
+
+/* Ensure buttons in the toolbar don't have excessive margins if they inherit them */
+.actions-toolbar button {
+  margin: 0;
 }
 
