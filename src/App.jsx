@@ -37,18 +37,20 @@ function SortableItem(props) {
     opacity: isDragging ? 0.7 : 1, // Standard opacity for dragging
     zIndex: isDragging ? 100 : 'auto',
     // The class `dragging` will be added to .todo-item for CSS styles
+    cursor: props.isReordering ? (isDragging ? 'grabbing' : 'grab') : 'default',
   };
 
   return (
-    <li 
-      ref={setNodeRef} 
-      style={style} 
+    <li
+      ref={setNodeRef}
+      style={style}
       {...attributes} // Spread attributes for sortable
       // Add className for base styling and dragging state
+      {...(props.isReordering ? listeners : {})} // Apply listeners to the li itself when reordering
       className={`todo-item ${props.completed ? 'completed' : ''} ${isDragging ? 'dragging' : ''}`}
     >
-      {/* Pass down children function, which expects drag listeners */}
-      {props.children(listeners)}
+      {/* Pass down children function, which no longer expects drag listeners */}
+      {props.children()}
     </li>
   );
 }
@@ -591,12 +593,12 @@ function App() {
                   strategy={verticalListSortingStrategy}
                 >
                   {filteredTodos.map((todo) => (
-                    <SortableItem key={todo.id} id={todo.id} completed={todo.completed}>
-                      {(dragListeners) => ( // Children as a function to receive drag listeners
+                    <SortableItem key={todo.id} id={todo.id} completed={todo.completed} isReordering={isReordering}>
+                      {() => ( // Children function no longer receives dragListeners
                         <>
-                          <GripVertical size={20} className="drag-handle" {...dragListeners} />
-                          <span onClick={() => toggleTodo(todo.id)} className="todo-text">
-                            [{todo.completed ? 'x' : ' '}] {todo.text}
+                          <ArrowUpDown size={20} className="drag-handle" /> {/* dragListeners removed */}
+                          <span onClick={() => !isReordering && toggleTodo(todo.id)} className="todo-text">
+                            {isReordering ? todo.text : `[${todo.completed ? 'x' : ' '}] ${todo.text}`}
                           </span>
                           {/* Trash icon is omitted here because parent logic hides it during reorder */}
                         </>
